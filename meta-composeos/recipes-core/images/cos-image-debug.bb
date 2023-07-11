@@ -1,5 +1,5 @@
 SUMMARY = "ComposeOs image (debug)"
-DESCRIPTION = "Include base packages for composeOs with debug tweaks"
+DESCRIPTION = "composeOs image with debug tweaks and some extra packages"
 LICENSE = "MIT"
 
 require composeos-common.inc 
@@ -16,5 +16,11 @@ add_open_rc_log() {
 
 }
 
-ROOTFS_POSTPROCESS_COMMAND:append = "${@bb.utils.contains('DISTRO_FEATURES','openrc',' add_open_rc_log;','',d)}"
+# Add COS_DEBUG="true" flag
+add_cos_debug() {
+    local COS_CONF="${IMAGE_ROOTFS}${sysconfdir}/composeos.conf"
+    [ -f ${COS_CONF} ] && sed -i 's/COS_DEBUG="false"/COS_DEBUG="true"/' ${COS_CONF}
+}
+
+ROOTFS_POSTPROCESS_COMMAND:append = "${@bb.utils.contains('DISTRO_FEATURES','openrc',' add_open_rc_log; add_cos_debug; ','',d)}"
 

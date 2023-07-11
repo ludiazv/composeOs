@@ -1,5 +1,5 @@
 SUMMARY = "ComposeOs image"
-DESCRIPTION = "Include base packages for composeOs with debug tweaks"
+DESCRIPTION = "composeOs imange for release"
 LICENSE = "MIT"
 
 require composeos-common.inc 
@@ -10,6 +10,3 @@ EXTRA_USERS_PARAMS += " \
 	usermod -p '${COMPOSEOS_ROOT_PASSWORD}' root; \
 "
 
-# Debug features and some extra packages
-#CORE_IMAGE_EXTRA_INSTALL += "dtc iperf3 bash"
-#EXTRA_IMAGE_FEATURES ?= "debug-tweaks"

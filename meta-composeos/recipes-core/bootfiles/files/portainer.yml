@@ -1,0 +1,20 @@
+# Portainer stack
+# Default parameters
+##PORT=8000
+##PORT_API=9443
+---
+version: "3.3"
+
+services:
+  portainer:
+    container_name: ${STACK_NAME}
+    image: docker.io/portainer/portainer-ce:${TAG}
+    ports:
+      - "${PORT}:8000"
+      - "${PORT_API}:9443"
+    volumes:
+      - /run/podman/podman.sock:/var/run/docker.sock
+      - portainer_data:/data
+
+volumes:
+  portainer_data:

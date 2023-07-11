@@ -1,0 +1,16 @@
+# Ignore instrumental folders
+.DS_*
+mnt
+downloads
+sstate-cache
+poky
+meta-*
+!meta-composeos/
+output_images
+wip_patches
+
+# Supported boards builds
+rpi3b
+rpi4
+opizero2
+bpm2z

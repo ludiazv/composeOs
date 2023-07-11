@@ -1,0 +1,18 @@
+#!/sbin/openrc-run
+
+description="ComposeOS boot service"
+#command="/lib/composeos/bootrc.sh"
+
+depend() {
+
+  need root
+  before hostname network
+
+}
+
+start()
+{
+  ebegin "Configure composeOs start"
+  /lib/composeos/bootrc.sh
+  eend $?
+}

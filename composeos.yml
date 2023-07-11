@@ -1,0 +1,95 @@
+---
+# General build information
+crops_container: crops/poky:ubuntu-20.04
+current_barch: &currentb "langdale"
+
+
+# Assets
+repos:
+  - name: poky
+    repo: https://git.yoctoproject.org/poky
+    dir: poky
+    branch: *currentb
+  - name:  meta-openembedded
+    repo: git://git.openembedded.org/meta-openembedded
+    dir: meta-openembedded
+    branch: *currentb
+  - name: meta-sunxi
+    repo: https://github.com/linux-sunxi/meta-sunxi
+    dir: meta-sunxi
+    branch: master
+  - name: meta-raspberrypi
+    repo: git://git.yoctoproject.org/meta-raspberrypi
+    dir: meta-raspberrypi
+    branch: *currentb
+  - name: meta-virtualization
+    repo: git://git.yoctoproject.org/meta-virtualization
+    dir: meta-virtualization
+    branch: *currentb
+  - name: meta-openrc
+    repo: https://github.com/jsbronder/meta-openrc.git
+    dir: meta-openrc
+    branch: *currentb
+
+
+
+# Common definition as anchors
+common_layers: &clayers
+  0: "poky/meta"
+  1: "poky/meta-poky"
+  2: "poky/meta-yocto-bsp"
+  3: "meta-openembedded/meta-oe"
+  4: "meta-openembedded/meta-python"
+  5: "meta-openembedded/meta-filesystems"
+  6: "meta-openembedded/meta-networking"
+  7: "meta-virtualization"
+  8: "meta-openrc"
+  9: "meta-composeos"
+
+
+common_local: &clocal
+  0: 'DISTRO = "composeos"'
+  1: 'TCLIBC= "musl"'
+
+# Board support
+boards:
+  rpi3b:
+    machine: "raspberrypi3-64"
+    local:
+      <<:  *clocal
+      100: 'ENABLE_UART = "1"'
+    layers:
+      <<:  *clayers
+      100: "meta-raspberrypi"
+    images: [ 'wic.bz2', 'wic.bmap','manifest' ]
+
+  bpm2z:
+    machine: "bananapi-m2-zero"
+    local:
+      <<: *clocal
+      #100: 'DISTRO_FEATURES:append = " sunxi-env"'
+      #101: 'SUNXI_OVERLAYS_ENABLE = "h3-i2c1"'
+      102: 'CORE_IMAGE_EXTRA_INSTALL:append = "  linux-firmware-bcm43430"'
+    layers:
+      <<: *clayers
+      100: "meta-sunxi"
+    images: [ 'wic.gz' , 'wic.bmap' , 'manifest' ]
+
+  opizero2:
+    machine: "orange-pi-zero2"
+    local:
+      <<: *clocal
+      100: 'CORE_IMAGE_EXTRA_INSTALL:append = " uwe5622-firmware"'
+      101: 'MACHINE_FEATURES_BACKFILL_CONSIDERED += "rtc"'
+      102: 'KERNEL_MODULE_AUTOLOAD:append = " sprdwl_ng "'
+      #101: 'PACKAGE_EXCLUDE += "busybox-hwclock"'
+    layers:
+      <<:  *clayers
+      100: "meta-sunxi"
+    images: [ 'wic.gz' , 'wic.bmap' , 'manifest' ]
+
+
+
+
+
+

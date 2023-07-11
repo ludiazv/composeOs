@@ -1,0 +1,119 @@
+---
+# composeos.yml is master file to set up the and should be placed under /boot directory
+#
+# Please check the configurations options described below.
+#
+# -----------------------------------------------
+# start: key information during early boot phase
+# -----------------------------------------------
+# resize_root_fs: [bool] - Attempt to resize rootfs to max disk capacity. (default:false)
+# hostname: host name to be applied to the host.
+# extra_boot_cmds: | [multi line] - sh (POSIX) script with additional commands on boot. All commands arr (defatult: nil)
+# ntp_servers: [ list of string ] - each string is server string for ntp servers (default: nil)
+#               if ntp_servers is nill global ntp.pool.org servers will be used.
+# hwlock: [bool] - Use hardware clock (default:false)
+# wait_for_time: [bool] - wait to the clock to be sync to start services (default: true)
+# timezone: [tzata subdir] - Name of the timezone to apply e.g Europe/Berlin , UTC, ETC ... (Default: Universal)
+#
+# swap:
+#   size: size in MB for the swap file. 0-> means swap on disk disabled (default: 1000MB)
+#   path: path of the swap file (default: /swapfile)
+#   zswap: max % of total ram reserved to ZSWAP. 0-> means ZSWAP disabled (default: 20)
+#   zwap_algo: compression algo for ZSWAP. lzo/lz4 (default:lz4)
+#   zwap_pool: pool type for ZSWAP. zbud/z3fold (default:z3fold)
+#
+# mount: addional mount list (default: void)
+#   dev: device to mount (default: /dev/sda1)
+#   name: name of the mount. The efective path of the mount will be '/mnt/<name>' [default: 'data']
+#   type: fs tyoe (default: ext4)
+#   options: mount options (default: defaults)
+#   root: [bool] the root folder the mount will be onwned by root otherwise the folder will be owned by 'composeos' user [default: false]
+#  
+# network: network configuration object layout
+#  domain: default domain name (default: nil)
+#  dns: List of dns servers to use (default: [1.1.1.1 , 9.9.9.9]
+#  ifaces: list of iterfaces to initialize. Each element is defined as the following object
+#
+#     type: 'wired' or 'wpa'/'wifi' [required] (default: wired)
+#     enabled: bool [required] [default : false]
+#     iface: name of the interface [required] (default:eth0)
+#
+#     if type 'wifi'/'wpa' is selected the following two fields are required:
+#       ssid: name of the ssid to connect to (mandatory)
+#       psk:  preshared key for wpa.
+#       password: plaintext password to use for the sid
+#       psk or password are mandatory. password 
+#
+#  Current version supports only WPA personal wifi configuration.
+#
+#     mode: dhcp or static [default: dhcp]
+#     if mode static the following fields are required
+#     address: ipv4 address.
+#     netmask: ipv4 netmask
+#     gateway: ipv4 address
+#
+start:
+
+  #mount:
+  #  - dev: /dev/sda1
+  #    name: storage
+
+  #swap:
+  #  size: 1000
+  #  path: "/swapfile"
+  #  zswap: 25
+  #  zswap_algo: lz4
+  #  zswap_pool: z3fold
+
+  resize_root_fs: true
+  #hwclock: false
+  #wait_for_time: truei
+  #timezone: Universal
+
+  hostname: "composeos"
+
+  #extra_boot_cmds: | 
+  #    echo "put your script here"
+  #    echo "is multiline"
+    
+  #ntp_servers:
+  #  - 0.pool.ntp.org 
+  #  - 1.pool.ntp.org
+  #  - 2.pool.ntp.org
+  #  - 3.pool.ntp.org
+
+  network:
+    #domain: mydomain
+    #dns: [ "9.9.9.9" , "1.1.1.1" ]
+    ifaces:
+      - type: wired
+        enabled: true
+        iface: eth0
+        mode: dhcp
+        #if static:
+        #address: xx.xx.xx.xx
+        #netmask: xx.xx.xx.xx
+        #gateway: xx.xx.xx.xx
+      #- type: wifi
+      #  enabled: false
+      #  iface: wlan0
+      #  ssid: "your ssid"
+      #  psk: "your psk"
+      #  mode: dhcp
+
+# --------------------------------------
+# Compose section is processed at the last stage of initilization running desired services
+# --------------------------------------
+# This section enable composos to start contairnes via docker-compose.yml files and preparing the filesystem and enviroment for
+# the containers.
+#  
+# run: [ list of compose actions]
+#   - file: full path a docker-compose.yml file to launch
+#   - env:
+#
+compose:
+  
+  run:
+    - ""
+
+

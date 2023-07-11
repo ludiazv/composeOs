@@ -1,0 +1,15 @@
+#!/sbin/openrc-run
+
+depend() {
+	need chronyd
+	after chronyd
+}
+
+start() {
+	if yesno "$DISABLE_WAIT"; then
+	   einfo "chrony-wait is disabled. No wait was done"
+	   return 0
+	else
+	   /usr/bin/chronyc $ARGS
+	fi
+}

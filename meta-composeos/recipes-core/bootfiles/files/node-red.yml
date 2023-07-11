@@ -1,0 +1,14 @@
+# Default env
+##PORT=1880
+version: "3.7"
+services:
+  node-red:
+    image: docker.io/nodered/node-red:${TAG}
+    container_name: ${STACK_NAME}
+    environment:
+      - TZ=${TZ}
+    ports:
+      - "${PORT}:1880"
+    volumes:
+      - ${STACK_FOLDER}:/data
+

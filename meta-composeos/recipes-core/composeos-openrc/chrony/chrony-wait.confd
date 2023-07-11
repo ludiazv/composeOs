@@ -1,0 +1,11 @@
+# /etc/conf.d/chrony-wait
+
+# DISABLE_WAIT
+# Disable the waitsync event
+DISABLE_WAIT=no
+
+# Arguments to chronyc
+ARGS="waitsync 10"
+
+# vrf e.g 'vrf-mgmt'
+#vrf=""

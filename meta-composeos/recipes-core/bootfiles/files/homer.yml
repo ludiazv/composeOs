@@ -1,0 +1,16 @@
+# Homer Dashboard
+##PORT=80
+---
+version: "2"
+services:
+  homer:
+    image: docker.io/b4bz/homer:${TAG}
+    container_name: ${STACK_NAME}
+    volumes:
+      - ${STACK_FOLDER}:/www/assets
+    ports:
+      - ${PORT}:8080
+    user: ${COS_UID}:$COS_GID}
+    environment:
+      - INIT_ASSETS=1
+        #- SUBFOLDER=${HOMER_SUBFOLDER}

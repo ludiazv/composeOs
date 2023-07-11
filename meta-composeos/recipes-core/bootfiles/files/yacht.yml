@@ -1,0 +1,20 @@
+# Yacht container stack
+##PORT=8000
+---
+version: "3.3"
+
+services:
+  portainer:
+    container_name: ${STACK_NAME}
+    image: ghcr.io/selfhostedpro/yacht:${TAG}
+    ports:
+      - "${PORT}:8000"
+    volumes:
+      - /run/podman/podman.sock:/var/run/docker.sock
+      - yacht_data:/config
+    environment:
+      # Required root to access the socket.
+      - 'PUID=0'
+      - 'PGID=0'
+volumes:
+  yacht_data:

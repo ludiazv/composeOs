@@ -1,0 +1,55 @@
+start:
+  mount:
+    - name: main
+      dev: /dev/sda1
+      main_storage: true
+
+  resize_root_fs: true
+  timezone: UTC
+  governor: conservative
+
+  hostname: cos
+
+  swap:
+    size: 512
+    zswap: 15
+      
+  network:
+    ifaces:
+      - type: wired
+        iface: eth0
+        mode: static
+        address: 192.168.50.42
+        netmask: 255.255.255.0
+        gateway: 192.168.50.1
+
+     #- type: wpa
+     #   iface: wlan0
+     #   mode: dhcp
+     #   ssid: XX_CUESTOXXX
+     #   psk: 87bdbe63a53d9565fe92612cfe9f89a8e1dd48c6572d10262528376d4e1027f6
+
+          
+  extra_boot_cmd: |
+   # Activate green led for mmc activity
+   echo mmc0 > /sys/class/leds/green:status/trigger
+
+compose:
+  daemon: true
+
+  run:
+    yacht:
+      file: yacht.yml
+      env:
+        - 'PORT=8080'
+
+    #homer:
+    #  file: homer.yml
+
+
+
+      
+
+
+
+      

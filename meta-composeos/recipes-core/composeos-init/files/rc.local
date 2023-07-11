@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# rc.local is used to start launch all contarnimner via podmna-compose
+
+source /etc/composeos/composeos-functions.sh
+
+cos_echo "--------------------------"
+cos_echo "composeOS launcher        "
+cos_echo "--------------------------"
+
+# laucher mesage
+echo "ComposeOS laucher started"
+
+# Check and load configuration
+if [ ! -f "$COS_CONF_FILE" ] ; then
+   cos_echo "composeOS configuration file $COS_CONF_FILE not found. No composeOS configuration steps will be attempted."
+      exit 1
+fi
+
+cos_load_cnf
+if [ $? -ne 0 ] ; then
+  cos_echo "composeOS configuration file $COS_CONF_FILE failed to load 'start' and/or 'compose' sections. No composeOS configuration steps will be attempted."
+  exit 1
+fi
+
+# 
+
+
+

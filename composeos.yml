@@ -17,7 +17,12 @@ repos:
   - name: meta-sunxi
     repo: https://github.com/linux-sunxi/meta-sunxi
     dir: meta-sunxi
-    branch: master
+    # branch: master
+    branch: 'ea627f09205d0aa3773fd76158f7f9d4983a7fa9'
+  - name: meta-arm
+    repo: git://git.yoctoproject.org/meta-arm
+    dir: meta-arm
+    branch: *currentb
   - name: meta-raspberrypi
     repo: git://git.yoctoproject.org/meta-raspberrypi
     dir: meta-raspberrypi
@@ -46,6 +51,11 @@ common_layers: &clayers
   8: "meta-openrc"
   9: "meta-composeos"
 
+sunxi_layers: &sunlayers
+  50: "meta-sunxi"
+  51: "meta-arm/meta-arm"
+  52: "meta-arm/meta-arm-toolchain"
+
 
 common_local: &clocal
   0: 'DISTRO = "composeos"'
@@ -72,7 +82,7 @@ boards:
       102: 'CORE_IMAGE_EXTRA_INSTALL:append = "  linux-firmware-bcm43430"'
     layers:
       <<: *clayers
-      100: "meta-sunxi"
+      <<: *sunlayers
     images: [ 'wic.gz' , 'wic.bmap' , 'manifest' ]
 
   opizero2:
@@ -85,7 +95,7 @@ boards:
       #101: 'PACKAGE_EXCLUDE += "busybox-hwclock"'
     layers:
       <<:  *clayers
-      100: "meta-sunxi"
+      <<: *sunlayers
     images: [ 'wic.gz' , 'wic.bmap' , 'manifest' ]
 
 

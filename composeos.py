@@ -211,12 +211,14 @@ def config(arg, conf):
 def build_board(board, info, debug=True):
     pwd = os.getcwd()
     vol = pwd
-    extra_cmd=""
+    extra_cmd = ""
     # For debug contributions comment TODO
-    vol = os.path.join(os.environ.get("HOME"), 'projects')
+    #vol = os.path.join(os.environ.get("HOME"), 'projects')
     #extra_cmd="bitbake -c cleansstate bootfiles ; bitbake bootfiles;"
+    
     # debug section
     print(f"pwd -> {pwd} | vol -> {vol}")
+    print(f"Start build board '{board}' debug={debug} info={info }...")
     if debug:
         target = "cos-image-debug"
         fname = "composeos-deb"

@@ -38,6 +38,7 @@ do_stack() {
 
   # run the command
   if [ "$enabled" = "true" ] ; then
+    echo "UP[$sn, usr=$usr, env=$env_file, cmd=$cmd_pars]" 
     su -l -c "$PODC -f ${COS_RUN_DIR}/cs-${sn}.yml ${env_file} $cmd_pars" $usr
     return $?
   else
@@ -52,12 +53,12 @@ do_list() {
   
   for s in $(ls -1 ${COS_RUN_DIR}/*.yml) ; do
     local sp=${s%.yml}
-    local sn=${sp#cs-}
-    printf "- [$sn]: yml ok "
-    [ -f ${COS_RUN_DIR}/$sp.env ] && printf "env ok"
-    [ -f ${COS_RUN_DIR}/$sp.usr ] && printf "usr ok"
-    [ -f ${COS_RUN_DIR}/$sp.enabled ] && printf "enabled:$(cat ${COS_RUN_DIR}/$sp.enabled)"
-    echo "."
+    local sn=${sp#cs\-}
+    printf "- [$sp]: yml[ok] "
+    [ -f $sp.env ] && printf "env[ok] "
+    [ -f $sp.usr ] && printf "usr[ok] "
+    [ -f $sp.enabled ] && printf "enabled[$(cat $sp.enabled)]"
+    echo ""
   done
 
   [ -f ${COS_RUN_DIR}/enabled ] && echo "Enabled list:$(cat ${COS_RUN_DIR}/enabled)"
@@ -71,8 +72,9 @@ if [ $# -lt 1 ] ; then
   exit 2
 fi
 
+
 # check supported commands
-if [ "$1" = "up" -o "$1" = "down" -0 "$1" = "list" ] ; then
+if [ "$1" = "up" -o "$1" = "down" -o "$1" = "list" ] ; then
   cmd="$1"
   shift
 else
@@ -84,15 +86,16 @@ fi
 stacks="$*"
 [ $# -eq 0 -a -f ${COS_RUN_DIR}/enabled ] && stacks=$(cat ${COS_RUN_DIR}/enabled)
 
-if [ -z "${stacks}" ] ; then
-  echo "no stacks provided" >&2
-  exit 1
-fi
-
 if [ "$cmd" = "list" ] ; then
   do_list
   exit 0
 fi
+
+if [ -z "${stacks}" ] ; then
+  echo "no stacks are available" >&2
+  exit 1
+fi
+
 
 # Up & down commands
 for s in $stacks ; do

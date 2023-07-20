@@ -15,6 +15,7 @@ start:
     zswap: 15
       
   network:
+    dns: [ 192.168.50.1 ]
     ifaces:
       - type: wired
         iface: eth0

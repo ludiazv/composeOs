@@ -256,14 +256,16 @@ def build(arg, conf):
 
     mkdir_p(os.path.join(os.getcwd(), "output_images"))
 
+    debug = False if arg.release else True
+
     if arg.all:
         print("BUILD for all boards started")
         for b, v in conf['boards'].items():
-            build_board(b, v)
-            
+            build_board(b, v, debug)
+
     elif arg.board is not None:
         if arg.board in conf['boards']:
-            build_board(arg.board, conf['boards'][arg.board])
+            build_board(arg.board, conf['boards'][arg.board], debug)
         else:
             die(f"board '{arg.board}' does not exists in config yml file")
     else:
@@ -289,8 +291,9 @@ def main():
     conf_p.add_argument("--board", help="Only configure selected board", type=str)
     conf_p.add_argument("--all", help="Configure all boards", action="store_true")
 
-    build_p.add_argument("--board", help="Only configure selected board", type=str)
-    build_p.add_argument("--all", help="Configure all boards", action="store_true")
+    build_p.add_argument("--board", help="Only build selected board", type=str)
+    build_p.add_argument("--all", help="build all boards", action="store_true")
+    build_p.add_argument("--release", help="build in release mode", action="store_true")
 
     p_args = parser.parse_args()
 

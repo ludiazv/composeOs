@@ -8,7 +8,7 @@
 
 ## Documentation
 
-Please check (the docs)[docs/composeos.md].
+Please check (the doc)[docs/composeos.md].
 
 ## Boards
 
@@ -16,10 +16,10 @@ Currently only this boards are built:
 
 - Raspberry Pi 4
 - Raspberry Pi 3
-- Orange Pi Zero 22
+- Orange Pi Zero 2
 - Banana PI M2 Zero
 
-Only 64bit images are provided when supported.
+Only 64bit images are provided for 64bit capable SoCs.
 
 
 ## Contribute
@@ -28,7 +28,7 @@ At this phase of development the most appreciable contribution are:
 
 - Testing the software and report the issues in the issues page.
 - Improve the documentation.
-- Provide examples of composeos.yml.
+- Provide examples of composeos.yml and software stacks.
 - Contribute with additional stack templates.
 - Add and test other boards.
 
@@ -46,7 +46,7 @@ If you want to contribute to the code base please note the following comments:
 ## TODO
 
 - Implement populate for tarballs.
-- Include additonal images: RPI ZERO W ,  RPI ZERO 2, Orange PI 3 LTS.
+- Include additonal images: RPI ZERO W ,  RPI ZERO 2, Orange PI 3 LTS , Orange PI Zero 3.
 - Rockchip family integration.
 
 

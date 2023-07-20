@@ -403,21 +403,21 @@ cos_populate_element() {
   local base=$2
   local usr="${COS_USER}"
   
-  cos_cnf_get_val "$el" ".file" ""
+  cos_get_cnf_val "$el" ".file" ""
   local file=$__
   get_path "$file" "$base"
   file=$__
-  cos_cnf_get_val "$el"  ".dir"  ""
+  cos_get_cnf_val "$el"  ".dir"  ""
   local dir=$__
   get_path "$dir" "$base"
   dir=$__
-  cos_cnf_get_val "$el" ".content" ""
+  cos_get_cnf_val "$el" ".content" ""
   local content=$__
-  cos_cnf_get_val "$el" ".force" "false"
+  cos_get_cnf_val "$el" ".force" "false"
   local force=$__
-  cos_cnf_get_val "$el" ".root" "false"
+  cos_get_cnf_val "$el" ".root" "false"
   local as_root=$__
-  cos_cnf_get_val "$el" ".perms" ""
+  cos_get_cnf_val "$el" ".perms" ""
   local perms=$__
 
   [ "$as_root" = "true" ] && usr="root"
@@ -440,13 +440,13 @@ cos_populate() {
   local base_dir=$2
   local usr="${COS_USER}"
 
-  cos_cnf_arr_len "$pop_arr" "."
+  cos_get_cnf_arr_len "$pop_arr" "."
   local len=$__
   cos_echo "[POPULATE] Populating #$len entries with base dir='$base_dir'..."
 
   len=$((len-1))
   for i in $(seq 0 $len); do
-     cos_cnf_get_obj "$pop_arr" ".[$i]" ""
+     cos_get_cnf_obj "$pop_arr" ".[$i]" ""
      [ ! -z $__ ] && cos_populate_element "$__" "$base_dir" "$usr"
   done
 

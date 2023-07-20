@@ -148,10 +148,15 @@ cos_run() {
   cos_get_cnf_val "$cos_cnf_compose" ".daemon" "false"
   if [ "$__" = "true" ] ; then
     cos_echo "[DAEMON] Starting podman service..."
-    /usr/bin/podman system service -t 0 &
-    local ppid=$!
-    cos_echo "Podman service started with pid=$ppid"
-    echo $ppid > ${COS_RUN_DIR}/podman.pid
+    if ps -e | grep 'podman system service' | grep -v 'grep' ; then
+      cos_echo "podman service is running"
+      [ -f ${COS_RUN_DIR}/podman.pid ] && cos_echo "PID=$(cat ${COS_RUN_DIR}/podman.pid)"
+    else
+      /usr/bin/podman system service -t 0 &
+      local ppid=$!
+      cos_echo "Podman service started with pid=$ppid"
+      echo $ppid > ${COS_RUN_DIR}/podman.pid
+    fi
     cos_echo "[DAEMON] Finished."
   else
     cos_echo "[DAEMON] Not started as $__ was selected in daemon property."
@@ -172,7 +177,7 @@ cos_run() {
 
   #3rd Top level populate
   cos_echo "[TOPPOPULATE] Populating Top level..."
-  cos_cnf_get_obj "$cos_cnf_compose" ".populate" "[]"
+  cos_get_cnf_obj "$cos_cnf_compose" ".populate" "[]"
   cos_populate "$__" "${COS_MAINSTORAGE}"
   cos_echo "[TOPOPULATE] finished."
 
@@ -184,7 +189,7 @@ cos_run() {
 
   cos_get_cnf_obj "$cos_cnf_compose" ".env" "[]"
   local genv=$__
-  cos_echo "[GLOB_ENV] loaded $genv"
+  cos_echo "[GLOB_ENV] loaded => $genv"
 
   cos_do_prepare_run "$r" "$genv" "${COS_USER}" "root"
   enabled_stacks=$__

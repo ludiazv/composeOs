@@ -6,6 +6,7 @@ sstate-cache
 poky
 meta-*
 !meta-composeos/
+!meta-composeos/dynamic-layers/meta-*
 output_images
 wip_patches
 

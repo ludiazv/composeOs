@@ -1,7 +1,8 @@
 ---
 # General build information
 crops_container: crops/poky:ubuntu-20.04
-current_barch: &currentb "langdale"
+current_barch: &currentb "mickledore"
+#current_barch: &currentb "langdale"
 
 
 # Assets
@@ -17,8 +18,8 @@ repos:
   - name: meta-sunxi
     repo: https://github.com/linux-sunxi/meta-sunxi
     dir: meta-sunxi
-    # branch: master
-    branch: 'ea627f09205d0aa3773fd76158f7f9d4983a7fa9'
+    branch: master
+    #branch: 'ea627f09205d0aa3773fd76158f7f9d4983a7fa9'
   - name: meta-arm
     repo: git://git.yoctoproject.org/meta-arm
     dir: meta-arm
@@ -85,6 +86,16 @@ boards:
       <<: *sunlayers
     images: [ 'wic.gz' , 'wic.bmap' , 'manifest' ]
 
+  opi3lts:
+    machine: "orange-pi-3lts"
+    local:
+      <<: *clocal
+      101: 'MACHINE_FEATURES_BACKFILL_CONSIDERED += "rtc"'
+    layers:
+      <<: *clayers
+      <<: *sunlayers
+    images: [ 'wic.gz' , 'wic.bmap' , 'manifest' ]
+
   opizero2:
     machine: "orange-pi-zero2"
     local:
@@ -97,9 +108,6 @@ boards:
       <<:  *clayers
       <<: *sunlayers
     images: [ 'wic.gz' , 'wic.bmap' , 'manifest' ]
-
-
-
 
 
 

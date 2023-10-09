@@ -11,4 +11,4 @@ BOARD=$1
 
 shift
 
-docker run -t --rm --name bb -v$(pwd):$(pwd) --workdir=$(pwd) $BUILD_CONTAINER bash -c "source poky/oe-init-build-env $BOARD; bitbake $@"
+docker run -t --rm --name bb -v$(pwd):$(pwd) --workdir=$(pwd) $BUILD_CONTAINER bash -c "source poky/oe-init-build-env build_$BOARD; bitbake $@"

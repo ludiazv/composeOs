@@ -5,7 +5,7 @@ LICENSE = "MIT"
 require composeos-common.inc 
 
 # Debug features and some extra packages
-CORE_IMAGE_EXTRA_INSTALL += " dtc iperf3 "
+CORE_IMAGE_EXTRA_INSTALL += " dtc iperf3 hdparm"
 EXTRA_IMAGE_FEATURES ?= "debug-tweaks"
 
 # Add activate openrc log

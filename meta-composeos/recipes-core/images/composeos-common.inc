@@ -38,8 +38,8 @@ EXTRA_USERS_PARAMS += " \
 # Needed system software
 # Support for kernel modules and mod tools and cgroups support required for contariners
 CORE_IMAGE_EXTRA_INSTALL += "kernel-modules kmod cgroup-lite"
-# Date and time 
-CORE_IMAGE_EXTRA_INSTALL += "tzdata chrony"
+# Date and time , cronie , usbtools
+CORE_IMAGE_EXTRA_INSTALL += "tzdata chrony cronie usbutils"
 # Container utils. (py modules are required by podman-copose)
 CORE_IMAGE_EXTRA_INSTALL += " podman-tui "
 #python3-json python3-dotenv python3-logging "

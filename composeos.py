@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import argparse
 import os
 import sys
@@ -31,13 +33,14 @@ def die(msg):
     sys.exit(1)
 
 def ask(msg):
-    i=input(f"{msg} [y/N]?")
+
+    i = input(f"{msg} [y/N]?")
     return i.lower() == 'y'
 
 
 def rmdir(d):
     if os.path.isdir(d):
-        shutil.rmtree(d,ignore_errors=True)
+        shutil.rmtree(d, ignore_errors=True)
 
 # Assets
 
@@ -92,7 +95,7 @@ def assets(arg, conf):
 
 def clean_board(b):
     pwd = os.getcwd()
-    p = os.path.join(pwd, b)
+    p = os.path.join(pwd, f"build_{b}")
     print(f"Cleaning board {b} by removing {p}....", end='')
     rmdir(p)
     print("OK")
@@ -124,7 +127,7 @@ def config_board(board, info):
     if 'machine' in info and 'local' in info and 'layers' in info:
         machine = info['machine']
         pwd = os.getcwd()
-        conf_dir = os.path.join(pwd, board, 'conf')
+        conf_dir = os.path.join(pwd, f"build_{board}", 'conf')
         local_file = os.path.join(conf_dir, 'local.conf')
         local_fileb = os.path.join(conf_dir, 'local.conf_orig')
         layer_file = os.path.join(conf_dir, 'bblayers.conf')
@@ -133,7 +136,7 @@ def config_board(board, info):
         # bootstrap board dir if needed
         if not os.path.isdir(conf_dir) or not os.path.isfile(local_fileb) or not os.path.isfile(layer_fileb):
             print("bootstrap build directory...", end='')
-            cmd = f"docker run -ti --rm --name {CONTAINER_NAME}_bs -v{pwd}:{pwd} --workdir={pwd} {CONTAINER_IMAGE} bash -c 'source poky/oe-init-build-env {board}; bitbake --version'"
+            cmd = f"docker run -ti --rm --name {CONTAINER_NAME}_bs -v{pwd}:{pwd} --workdir={pwd} {CONTAINER_IMAGE} bash -c 'source poky/oe-init-build-env build_{board}; bitbake --version'"
             res = subprocess.run(cmd, shell=True)
             if res.returncode == 0:
                 shutil.copy(local_file, local_fileb)
@@ -213,7 +216,7 @@ def build_board(board, info, debug=True):
     vol = pwd
     extra_cmd = ""
     # For debug contributions comment TODO
-    #vol = os.path.join(os.environ.get("HOME"), 'projects')
+    vol = os.path.join(os.environ.get("HOME"), 'projects')
     #extra_cmd="bitbake -c cleansstate bootfiles ; bitbake bootfiles;"
     
     # debug section
@@ -230,14 +233,14 @@ def build_board(board, info, debug=True):
         compressor = "xz"
         c_level = "-9"
 
-    cmd = f"docker run -ti --rm --name {CONTAINER_NAME} -v{vol}:{vol} --workdir={pwd} {CONTAINER_IMAGE} bash -c 'source poky/oe-init-build-env {board}; {extra_cmd} bitbake {target}'"
+    cmd = f"docker run -ti --rm --name {CONTAINER_NAME} -v{vol}:{vol} --workdir={pwd} {CONTAINER_IMAGE} bash -c 'source poky/oe-init-build-env build_{board}; {extra_cmd} bitbake {target}'"
     result = subprocess.run(cmd, shell=True)
 
     if result.returncode == 0:
         img=map(lambda x: ( f"{target}-{info['machine']}.{x}", x ), info['images'])
         print("Build done now copying images ...", end='', flush=True)
         for i, ext in img:
-            src = os.path.join(board, 'tmp', 'deploy', 'images', info['machine'], i)
+            src = os.path.join(f"build_{board}", 'tmp', 'deploy', 'images', info['machine'], i)
             dst = os.path.join(os.getcwd(), 'output_images', f"{fname}-{info['machine']}.{ext}")
             print(f"[{dst}]", end="", flush=True)
             subprocess.run(['cp', src, dst])
@@ -248,7 +251,7 @@ def build_board(board, info, debug=True):
 
     else:
         die(f"{board} failed build")
-        
+
 
 
 

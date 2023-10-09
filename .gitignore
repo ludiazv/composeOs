@@ -11,6 +11,7 @@ output_images
 wip_patches
 
 # Supported boards builds
+build_*
 rpi3b
 rpi4
 opizero2

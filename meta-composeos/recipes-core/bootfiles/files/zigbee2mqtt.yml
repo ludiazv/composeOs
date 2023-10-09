@@ -1,0 +1,21 @@
+# Default env
+##PORT=8080
+##DEV=/dev/ttyACM0
+# Recommendation set DEV using /dev/serial/by-id/xxxxxx to assure consitency
+version: '3.8'
+services:
+  zigbee2mqtt:
+    container_name: ${STACK_NAME}
+    image: docker.io/koenkk/zigbee2mqtt:${TAG}
+    restart: unless-stopped
+    volumes:
+      - ${STACK_FOLDER}:/app/data
+      - /run/udev:/run/udev:ro
+    ports:
+      # Frontend port
+      - ${PORT}:${PORT}
+    environment:
+      - TZ=${TZ}
+    devices:
+      # Make sure this matched your adapter location
+      - ${DEV}:/dev/ttyACM0
